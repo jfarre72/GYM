@@ -231,6 +231,7 @@ function AddExerciseModal({
               <input
                 type="number"
                 inputMode="numeric"
+                onFocus={(e) => e.target.select()}
                 className={inputClass}
                 value={sets}
                 onChange={(e) => setSets(e.target.value)}
@@ -240,6 +241,7 @@ function AddExerciseModal({
               <input
                 type="number"
                 inputMode="numeric"
+                onFocus={(e) => e.target.select()}
                 className={inputClass}
                 value={repsMin}
                 onChange={(e) => setRepsMin(e.target.value)}
@@ -249,6 +251,7 @@ function AddExerciseModal({
               <input
                 type="number"
                 inputMode="numeric"
+                onFocus={(e) => e.target.select()}
                 className={inputClass}
                 value={repsMax}
                 onChange={(e) => setRepsMax(e.target.value)}

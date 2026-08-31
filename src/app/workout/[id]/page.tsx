@@ -244,6 +244,7 @@ export default function WorkoutPage() {
                         <input
                           type="number"
                           inputMode="decimal"
+                          onFocus={(e) => e.target.select()}
                           placeholder="kg"
                           className="min-h-[48px] w-full rounded-xl border border-slate-300 bg-white px-2 text-center text-lg font-semibold outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
                           value={s.weight ?? ""}
@@ -267,6 +268,7 @@ export default function WorkoutPage() {
                         <input
                           type="number"
                           inputMode="numeric"
+                          onFocus={(e) => e.target.select()}
                           placeholder="reps"
                           className="min-h-[48px] w-full rounded-xl border border-slate-300 bg-white px-2 text-center text-lg font-semibold outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
                           value={s.reps ?? ""}
