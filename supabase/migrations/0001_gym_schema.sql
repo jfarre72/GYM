@@ -131,3 +131,38 @@ begin
     (v_routine_id, v_jalon,       6, 3, 8,  12),
     (v_routine_id, v_hombros,     7, 3, 8,  12);
 end $$;
+
+-- =============================================================
+-- Row Level Security (RLS)
+-- =============================================================
+-- Se habilita RLS en todas las tablas gym_* y se agregan políticas
+-- PERMISIVAS para los roles anon y authenticated. Esto satisface el
+-- chequeo de seguridad de Supabase y mantiene la app funcional en el
+-- MVP sin login.
+--
+-- IMPORTANTE (futuro multiusuario): cuando se agregue autenticación,
+-- reemplazar estas políticas abiertas por unas basadas en user_id
+-- (p. ej. `using (user_id = auth.uid())`) y quitar el acceso a `anon`.
+-- =============================================================
+do $$
+declare
+  t text;
+begin
+  foreach t in array array[
+    'gym_exercises',
+    'gym_routines',
+    'gym_routine_exercises',
+    'gym_workouts',
+    'gym_workout_exercises',
+    'gym_workout_sets'
+  ]
+  loop
+    execute format('alter table %I enable row level security;', t);
+    -- Política abierta (MVP sin login). Idempotente: se recrea si ya existe.
+    execute format('drop policy if exists %I on %I;', t || '_open_access', t);
+    execute format(
+      'create policy %I on %I for all to anon, authenticated using (true) with check (true);',
+      t || '_open_access', t
+    );
+  end loop;
+end $$;

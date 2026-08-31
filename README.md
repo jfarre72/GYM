@@ -86,10 +86,25 @@ src/
     queries/           # consultas Supabase por dominio
 ```
 
+## Seguridad (RLS)
+
+La migración **habilita Row Level Security** en todas las tablas `gym_*` y
+crea políticas **permisivas** para los roles `anon` y `authenticated`. Esto
+satisface el chequeo de seguridad de Supabase y mantiene la app funcional en
+el MVP sin login.
+
+> ⚠️ Con estas políticas abiertas, cualquiera con la anon key puede
+> leer/escribir las tablas `gym_*`. Es aceptable para un MVP personal, no para
+> producción con datos de terceros.
+
+Al ejecutar la migración en Supabase podés elegir **"Run and enable RLS"**: la
+migración ya deja RLS activo con las políticas necesarias para que la app ande.
+
 ## Preparado para el futuro (sin implementar aún)
 
 La estructura permite agregar más adelante sin rediseñar:
 
 - `user_id` referenciando `auth.users`
-- Row Level Security (RLS) y multiusuario
-- Autenticación, perfiles, etc.
+- Reemplazar las políticas abiertas por políticas por usuario
+  (`using (user_id = auth.uid())`) y quitar el acceso a `anon`
+- Autenticación, perfiles, multiusuario
